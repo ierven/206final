@@ -15,6 +15,9 @@ response = requests.request('GET', search_url, headers=headers)
 
 data = response.json()
 
-data1 = data.total
+data2 = data['businesses']
+bus_dict = {}
+for business in data2:
+    bus_dict[business['name']] = (business['id'],business['price'])
 
 print(data)
