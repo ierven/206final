@@ -28,5 +28,17 @@ for bus in bus_dict.keys():
     price1 = bus_dict[bus][1]
     res_data = requests.request('GET', review_url.format(id1), headers=headers)
     parsed_data = res_data.json()
-    review_data[bus] = parsed_data['reviews']
+    review_data[bus] = (parsed_data['reviews'], price1)
+
+
+reviews_price_organized = {}
+for restaurant in review_data.keys():
+    review_price = review_data[restaurant][1]
+    for review in review_data[restaurant][0]:
+        reviews = []
+        review_txt = review['text']
+        reviews.append(review_txt)
+    if review_price not in reviews_price_organized:
+        reviews_price_organized[review_price] = []
+    reviews_price_organized[review_price].append(reviews)
 print(data)
