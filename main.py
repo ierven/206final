@@ -12,7 +12,7 @@ with open(full_path_count, 'r') as count_file:
     city_idx = fileData['count']
 
 
-cities = ["Ann Arbor, MI", "Athens, OH", "Bloomington, IN", "Ames, IA", "Syracuse, NY", "Berkeley, CA", "Boulder, CO", "Tempe, AZ", "Malibu, CA", "Corvallis, OR"]
+cities = ["Ann Arbor, MI", "Athens, OH", "Bloomington, IN", "Ames, IA", "Syracuse, NY", "Berkeley, CA", "Los Angeles, CA", "Boulder, CO", "Tempe, AZ", "Malibu, CA", "Corvallis, OR"]
 
 city = cities[city_idx]
 with open(full_path_count, 'w') as count_file:
