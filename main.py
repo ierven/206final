@@ -35,7 +35,8 @@ bus_dict = {}
 
 review_data = {}
 for business in data2:
-    bus_dict[business['name']] = (business['id'],business['rating'],business['price'])
+    if 'price' in business.keys():
+        bus_dict[business['name']] = (business['id'],business['rating'],business['price'])
 
 for bus in bus_dict.keys():
     id1 = bus_dict[bus][0]
