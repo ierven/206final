@@ -1,20 +1,28 @@
 import requests
-
-base_url = "https://api.datamuse.com/words?ml=good"
-base_url2 = "https://api.datamuse.com/words?ml=appetizing"
-base_url3 = "https://api.datamuse.com/words?ml=positive"
-base_url4 = "https://api.datamuse.com/words?ml=tasty"
-base_url5 = "https://api.datamuse.com/words?ml=excellent"
-base_url6 = "https://api.datamuse.com/words?ml=juicy"
-base_url7 = "https://api.datamuse.com/words?ml=awesome"
-
-res1 = requests.get(base_url).json()
-res2 = requests.get(base_url2).json()
-res3 = requests.get(base_url3).json()
-res4 = requests.get(base_url4).json()
-res5 = requests.get(base_url5).json()
-res6 = requests.get(base_url6).json()
-res7 = requests.get(base_url7).json()
+import json
+import os
 
 
-print(res1)
+filename = "words.json"
+full_path = os.path.join(os.path.dirname(__file__), filename)
+
+thesKey = "31d9d27b-4af0-4573-b493-842b62cc47d1"
+url = "https://www.dictionaryapi.com/api/v3/references/thesaurus/json/{}?key=31d9d27b-4af0-4573-b493-842b62cc47d1"
+
+posWords = ["great", "excellent", "stellar", "delicious", "fast", "tasty", "flavorful", "nice", "fun", "welcoming", "clean", "efficient", "good", "wonderful"]
+posWordsExtended = []
+posWordsDict = {}
+
+for word in posWords:
+    url_word = url.format(word)
+    goodData = requests.get(url_word).json()
+    syns = goodData[0]['meta']['syns'][0]
+    for word in syns:
+        if word not in posWordsExtended:
+            posWordsExtended.append(word)
+
+posWordsDict["words"] = posWordsExtended
+
+with open(full_path, 'w') as outfile:
+    json.dump(posWordsDict, outfile)
+print(posWordsExtended)
