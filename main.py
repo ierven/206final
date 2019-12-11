@@ -44,7 +44,8 @@ for bus in bus_dict.keys():
     price1 = bus_dict[bus][2]
     res_data = requests.request('GET', review_url.format(id1), headers=headers)
     parsed_data = res_data.json()
-    review_data[bus] = (parsed_data['reviews'], rating1, price1, city)
+    if 'reviews' in parsed_data.keys():
+        review_data[bus] = (parsed_data['reviews'], rating1, price1, city)
 
 for rest in review_data.keys():
     listOfReviews = []
