@@ -2,52 +2,49 @@ import os
 import sqlite3
 import json
 
-def readDataFromFile(filename):
-    full_path = os.path.join(os.path.dirname(__file__), filename)
-    f = open(full_path)
-    file_data = f.read()
-    f.close()
-    json_data = json.loads(file_data)
-    return json_data
+def createWordsDBS(json_data, cur, conn):
+    print("creating data tables...")
+    #drop pre existing tables and create new ones
+    cur.execute('DROP TABLE IF EXISTS Positive_Words')
+    cur.execute('CREATE TABLE Positive_Words (original_word TEXT, synonym TEXT)')
 
-def setUpDatabase(db_name):
-    path = os.path.dirname(os.path.abspath(__file__))
-    conn = sqlite3.connect(path+'/'+db_name)
-    cur = conn.cursor()
-    return cur, conn
+    cur.execute('DROP TABLE IF EXISTS Negative_Words')
+    cur.execute('CREATE TABLE Negative_Words (original_word TEXT, synonym TEXT)')
 
-json_data = readDataFromFile('wordsdb.json')
-cur, conn = setUpDatabase('Yelp_Restaurants.db')
+    review_keys = json_data.keys()
+    review_keys = list(review_keys)
 
+    pos_root_wrds = json_data['pos_words'].keys()
+    neg_root_wrds = json_data['neg_words'].keys()
 
-# cur.execute('DROP TABLE IF EXISTS Positive_Words')
-# cur.execute('CREATE TABLE Positive_Words (original_word TEXT, synonym TEXT)')
+    pst_words = []
+    for word_root in pos_root_wrds:
+        lst_words = json_data['pos_words'][word_root]
+        for synonym in lst_words:
+            pst_words.append((word_root, synonym))
 
-# cur.execute('DROP TABLE IF EXISTS Negative_Words')
-# cur.execute('CREATE TABLE Negative_Words (original_word TEXT, synonym TEXT)')
+    neg_words = []
+    for word_root in neg_root_wrds:
+        lst_words = json_data['neg_words'][word_root]
+        for synonym in lst_words:
+            neg_words.append((word_root, synonym))
 
-review_keys = json_data.keys()
-review_keys = list(review_keys)
-print(len(review_keys))
+    neg_length = len(neg_words)
+    pos_length = len(pst_words)
 
-pos_root_wrds = json_data['pos_words'].keys()
-neg_root_wrds = json_data['neg_words'].keys()
+    if neg_length < pos_length:
+        numberInserts = neg_length//20
+    else:
+        numberInserts = pos_length//20
+    print("Performing {} insertions into database for positive and negative words".format(numberInserts))
 
-pst_words = []
-for word_root in pos_root_wrds:
-    lst_words = json_data['pos_words'][word_root]
-    for synonym in lst_words:
-        pst_words.append((word_root, synonym))
-print(pst_words)
+    for counter in range(numberInserts):
+        for i in range(20):
+            idx = i+(20*counter)
+            cur.execute('INSERT INTO Positive_Words (original_word, synonym) VALUES (?, ?)',
+                (pst_words[idx][0], pst_words[idx][1]))
+        for i in range(20):
+            cur.execute('INSERT INTO Negative_Words (original_word, synonym) VALUES (?, ?)',
+                (neg_words[idx][0], neg_words[idx][1]))
 
-neg_words = []
-for word_root in neg_root_wrds:
-    lst_words = json_data['neg_words'][word_root]
-    for synonym in lst_words:
-        neg_words.append((word_root, synonym))
-print(neg_words)
-
-for i in range(100, 120):
-    cur.execute('INSERT INTO Negative_Words (original_word, synonym) VALUES (?, ?)',
-        (neg_words[i][0], neg_words[i][1]))
-conn.commit()
+    conn.commit()
