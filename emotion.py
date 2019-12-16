@@ -1,9 +1,6 @@
 import os
 import json
     
-    
-    
-    
 def getEmotionScores():
     filename = "words.json"
     filename2 = "reviews.json"
