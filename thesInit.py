@@ -18,7 +18,7 @@ def getWordsMerriamAPI():
     full_path2 = os.path.join(os.path.dirname(__file__), filename2)
 
     #store url with {} to format the word into the url
-    thesKey = "31d9d27b-4af0-4573-b493-842b62cc47d1"
+    # thesKey = "31d9d27b-4af0-4573-b493-842b62cc47d1"
     url = "https://www.dictionaryapi.com/api/v3/references/thesaurus/json/{}?key=31d9d27b-4af0-4573-b493-842b62cc47d1"
 
     #use list of positive root words to make request to database for synonyms
