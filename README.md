@@ -1,14 +1,6 @@
 # 206final
 
-            name  yelp_rating  emotion_rating  num_reviews  aggregated_rating
-restaurant
-mcdonalds
-subway
-savas
+Project that uses the Merriam Webster API, and the Yelp API to compare users numerical rating
+to an "emotion rating"
 
-
-create different table for each city where we are getting yelp reviews
-
-join the different tables to pull out the highly rated restaurants on yelp
-
-visualize data... which cities have the most highly rated restaurants
+Run the file with the command --help to receive detailed usage instructions

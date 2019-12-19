@@ -29,6 +29,11 @@ if len(args) > 1 and args[1] == "--init":
     print("created words tables")
     print("please run the same command with values 0-10 instead of --init to gather city data")
 
+elif len(args) > 1 and args[1] = "--help":
+    print("run the file with --init to initialize the data required to perform the emotion score rating")
+    print("run the file with values 0, 1, 2... 8, 9, 10 to gather review data")
+    print("run the visualizations and calculations file to manipulate and display data")
+
 elif len(args) > 1 and int(args[1]) < 11:
     city_idx = args[1]
 
