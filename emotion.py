@@ -1,6 +1,11 @@
 import os
 import json
     
+# REQUIRES: Null (No parameters)
+# MODIFIES: JSON files with review data
+# EFFECTS: Reads in review data and word data, calculates emotion score for each review,
+#          appends emotion score to review data and writes to new JSON file
+
 def getEmotionScores():
     filename = "words.json"
     filename2 = "reviews.json"
@@ -12,12 +17,16 @@ def getEmotionScores():
     posWords = []
     negWords = []
 
+    #reads in positive and negative words
     with open(full_path, 'r') as words_file:
         wordsDict = json.load(words_file)
 
     posWords = wordsDict['pos_words']
     negWords = wordsDict['neg_words']
 
+    # REQUIRES: restaurant review text
+    # MODIFIES: Null
+    # EFFECTS: Returns calculated emotion score for provided review text
 
     def calcEmotionScore(review_in):
         review_score = 0
@@ -29,6 +38,8 @@ def getEmotionScores():
                 review_score -= 1
         return review_score
 
+    # reads in words file and calculates each emotion score
+    # appends emotion score to review dictionary
     print("calculating emotion scores...")
     with open(full_path2, 'r') as words_file:
         reviewDict = json.load(words_file)
@@ -41,6 +52,7 @@ def getEmotionScores():
                 reviewDict[rest][0][idx].append({'emotion': score})
                 idx += 1
 
+    # append emotion score and write new JSON data to JSON file
     print("appending emotion data to json file at {}".format(full_path3))
     for rest in reviewDict.keys():
         avgEmotion = 0
