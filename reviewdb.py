@@ -22,7 +22,7 @@ def setUpDatabase(db_name):
     path = os.path.dirname(os.path.abspath(__file__))
     dbLoc = "database location: " + str(path)
     conn = sqlite3.connect(path+'/'+db_name)
-    cur = conn.cursor()s
+    cur = conn.cursor()
     return cur, conn, dbLoc
 
 # REQUIRES: json_data to be inserted, cursor/connection to database, city index, list of cities
